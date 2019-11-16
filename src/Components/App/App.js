@@ -9,7 +9,7 @@ import CreateItem from '../CreateItem';
 import RealeasedBundles from '../RealeasedBundles';
 
 const Wrapper = styled.main`
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -30,16 +30,22 @@ const Footer = styled.p`
   margin: 25px 0;
 `;
 
-const App = () => (
-  <Wrapper>
-    <Header />
-    <Content>
-      <Route path="/" exact component={CreateItem} />
-      <Route path="/createBundle" component={CreateBundle} />
-      <Route path="/realeasedBundles" component={RealeasedBundles} />
-      <Footer>Adistec 2019, para Santi</Footer>
-    </Content>
-  </Wrapper>
-);
+const App = props => {
+  const {
+    location: { pathname },
+  } = props;
+
+  return (
+    <Wrapper>
+      <Header pathname={pathname} />
+      <Content>
+        <Route path="/" exact component={CreateItem} />
+        <Route path="/createBundle" component={CreateBundle} />
+        <Route path="/realeasedBundles" component={RealeasedBundles} />
+        <Footer>Adistec 2019, para Santi</Footer>
+      </Content>
+    </Wrapper>
+  );
+};
 
 export default withRouter(App);
