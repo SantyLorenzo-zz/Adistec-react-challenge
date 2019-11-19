@@ -1,3 +1,3 @@
-import CreateBundle from './CreateBundle';
+import CreateBundleContainer from './CreateBundleContainer';
 
-export default CreateBundle;
+export default CreateBundleContainer;

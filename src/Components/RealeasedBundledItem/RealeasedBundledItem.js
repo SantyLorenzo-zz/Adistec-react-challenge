@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { Button, InputNumber } from 'antd';
+import { Button } from 'antd';
 
 const ItemContaier = styled.div`
   width: 100%;
@@ -51,14 +51,16 @@ const Description = styled.div`
   font-size: 14px;
 `;
 
-const RealeasedBundledItem = ({ item }) => {
+const RealeasedBundledItem = ({ item, onClick }) => {
   return (
     <ItemContaier>
       <TitleContainer>
-        <Title>CODE{item.title}</Title>
+        <Title>CODE{item.code}</Title>
         <div>
           <Button type="link">Print</Button>
-          <Button type="danger">Delete</Button>
+          <Button onClick={() => onClick(item)} type="danger">
+            Delete
+          </Button>
         </div>
       </TitleContainer>
       <DescriptionContainer>
@@ -72,7 +74,7 @@ const RealeasedBundledItem = ({ item }) => {
               <ItemContaier>
                 <ChildrenTitleContainer>
                   <Title>
-                    CODE{item.title}-{children.title}
+                    CODE{item.code}-{children.code}
                   </Title>
                 </ChildrenTitleContainer>
                 <DescriptionContainer>

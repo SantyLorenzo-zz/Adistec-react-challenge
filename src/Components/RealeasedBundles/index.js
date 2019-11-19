@@ -1,3 +1,3 @@
-import RealeasedBundles from './RealeasedBundles';
+import RealeasedBundlesContainer from './RealeasedBundlesContainer';
 
-export default RealeasedBundles;
+export default RealeasedBundlesContainer;

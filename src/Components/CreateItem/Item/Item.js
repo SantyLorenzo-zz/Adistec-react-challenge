@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { Button, InputNumber } from 'antd';
+import { Button } from 'antd';
 
 const ItemContaier = styled.div`
   width: 100%;
@@ -24,7 +24,9 @@ const ChildrenTitleContainer = styled.div`
   width: 100%;
   display: flex;
   padding: 15px 12px 15px 25px;
+  flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   background-color: #fcfcfc;
 `;
 
@@ -51,25 +53,19 @@ const Description = styled.div`
   font-size: 14px;
 `;
 
-const BundledItem = ({ item, handleMultipleItems, index }) => {
+const Item = ({ item, onClick, buttonType, buttonText }) => {
   return (
     <ItemContaier>
       <TitleContainer>
-        <Title>CODE{item.title}</Title>
-        <Button type="danger">Delete</Button>
+        <Title>CODE{item.code}</Title>
+        <Button onClick={() => onClick(item)} type={buttonType}>
+          {buttonText}
+        </Button>
       </TitleContainer>
       <DescriptionContainer>
         <Description>{item.description}</Description>
         <Description>${item.price}</Description>
         <Description>{item.type}</Description>
-        {item.type === 'Multiple' && (
-          <InputNumber
-            min={1}
-            max={100}
-            defaultValue={1}
-            onChange={value => handleMultipleItems(item.price * value)}
-          />
-        )}
         {item.children &&
           item.children.map((children, e) => (
             <>
@@ -77,21 +73,16 @@ const BundledItem = ({ item, handleMultipleItems, index }) => {
               <ItemContaier>
                 <ChildrenTitleContainer>
                   <Title>
-                    CODE{item.title}-{children.title}
+                    CODE{item.code}-{children.code}
                   </Title>
+                  <Button onClick={() => onClick(item)} type={buttonType}>
+                    {buttonText}
+                  </Button>
                 </ChildrenTitleContainer>
                 <DescriptionContainer>
                   <Description>{children.description}</Description>
                   <Description>${children.price}</Description>
                   <Description>{children.type}</Description>
-                  {children.type === 'Multiple' && (
-                    <InputNumber
-                      min={1}
-                      max={100}
-                      defaultValue={1}
-                      onChange={value => handleMultipleItems(children.price * value)}
-                    />
-                  )}
                 </DescriptionContainer>
               </ItemContaier>
             </>
@@ -100,5 +91,4 @@ const BundledItem = ({ item, handleMultipleItems, index }) => {
     </ItemContaier>
   );
 };
-
-export default BundledItem;
+export default Item;

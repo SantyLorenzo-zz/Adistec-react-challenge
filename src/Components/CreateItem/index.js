@@ -1,3 +1,3 @@
-import CreateItem from './CreateItem';
+import CreateItemContainer from './CreateItemContainer';
 
-export default CreateItem;
+export default CreateItemContainer;

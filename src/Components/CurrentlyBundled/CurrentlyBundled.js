@@ -33,7 +33,11 @@ const SubmitButton = styled(Button)`
   margin: 0 10px;
 `;
 
-const CurrentlyBundled = ({ listOfCurrentlyBundledItems }) => {
+const CurrentlyBundled = ({
+  listOfCurrentlyBundledItems,
+  deleteCurrentlyBundledItem,
+  createRealeasedBundled,
+}) => {
   const [totalPrice, setTotalPrice] = useState(0);
 
   const handleMultipleItems = value => {
@@ -44,12 +48,20 @@ const CurrentlyBundled = ({ listOfCurrentlyBundledItems }) => {
     <Container>
       <SectionTitle>Currently Bundled</SectionTitle>
       <ItemsContainer>
-        {listOfCurrentlyBundledItems.map((item, i) => (
-          <BundledItem item={item} handleMultipleItems={handleMultipleItems} index={i} />
+        {Object.keys(listOfCurrentlyBundledItems).map((key, i) => (
+          <BundledItem
+            onClick={deleteCurrentlyBundledItem}
+            item={listOfCurrentlyBundledItems[key]}
+            handleMultipleItems={handleMultipleItems}
+            index={i}
+          />
         ))}
       </ItemsContainer>
       <Price> ${totalPrice}</Price>
-      <SubmitButton type="primary" onClick={() => {}}>
+      <SubmitButton
+        type="primary"
+        onClick={() => createRealeasedBundled(listOfCurrentlyBundledItems)}
+      >
         Accept Bundle
       </SubmitButton>
     </Container>
