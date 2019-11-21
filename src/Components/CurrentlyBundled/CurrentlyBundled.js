@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Button } from 'antd';
-import BundledItem from './BundledItem';
+import BundledItem from './BundledItemContainer';
 
 const Container = styled.div`
   width: 40%;
@@ -41,8 +41,29 @@ const CurrentlyBundled = ({
   const [totalPrice, setTotalPrice] = useState(0);
 
   const handleMultipleItems = value => {
-    setTotalPrice(value);
+    setTotalPrice(totalPrice + value);
   };
+
+  const getPrice = listOfItems => {
+    // const items = Object.keys(listOfItems).map(key => listOfItems[key]);
+    // console.log('items', items);
+    // const total = items.reduce((acc, item) => acc + parseInt(item.price * item.quantity, 10), 0);
+    // setTotalPrice(total);
+    const subItems = [];
+    const items = Object.keys(listOfItems).map(key => {
+      if (listOfItems[key].children.length > 0) {
+        Array.prototype.push.apply(subItems, listOfItems[key].children);
+      }
+      return listOfItems[key];
+    });
+    Array.prototype.push.apply(items, subItems);
+    const total = items.reduce((acc, item) => acc + parseInt(item.price, 10), 0);
+    setTotalPrice(total);
+  };
+
+  useEffect(() => {
+    getPrice(listOfCurrentlyBundledItems);
+  });
 
   return (
     <Container>

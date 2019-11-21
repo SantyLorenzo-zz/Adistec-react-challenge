@@ -51,43 +51,41 @@ const Description = styled.div`
   font-size: 14px;
 `;
 
-const RealeasedBundledItem = ({ item, onClick }) => {
-  return (
-    <ItemContaier>
-      <TitleContainer>
-        <Title>CODE{item.code}</Title>
-        <div>
-          <Button type="link">Print</Button>
-          <Button onClick={() => onClick(item)} type="danger">
-            Delete
-          </Button>
-        </div>
-      </TitleContainer>
-      <DescriptionContainer>
-        <Description>{item.description}</Description>
-        <Description>${item.price}</Description>
-        <Description>{item.type}</Description>
-        {item.children &&
-          item.children.map((children, e) => (
-            <>
-              <SubItems>Sub-items</SubItems>
-              <ItemContaier>
-                <ChildrenTitleContainer>
-                  <Title>
-                    CODE{item.code}-{children.code}
-                  </Title>
-                </ChildrenTitleContainer>
-                <DescriptionContainer>
-                  <Description>{children.description}</Description>
-                  <Description>${children.price}</Description>
-                  <Description>{children.type}</Description>
-                </DescriptionContainer>
-              </ItemContaier>
-            </>
-          ))}
-      </DescriptionContainer>
-    </ItemContaier>
-  );
-};
+const RealeasedBundledItem = ({ item, onClick }) => (
+  <ItemContaier>
+    <TitleContainer>
+      <Title>CODE{item.code}</Title>
+      <div>
+        <Button type="link">Print</Button>
+        <Button onClick={() => onClick(item)} type="danger">
+          Delete
+        </Button>
+      </div>
+    </TitleContainer>
+    <DescriptionContainer>
+      <Description>{item.description}</Description>
+      <Description>${item.price}</Description>
+      <Description>{item.type}</Description>
+      {item.children &&
+        item.children.map((children, e) => (
+          <>
+            <SubItems>Sub-items</SubItems>
+            <ItemContaier>
+              <ChildrenTitleContainer>
+                <Title>
+                  CODE{item.code}-{children.code}
+                </Title>
+              </ChildrenTitleContainer>
+              <DescriptionContainer>
+                <Description>{children.description}</Description>
+                <Description>${children.price}</Description>
+                <Description>{children.type}</Description>
+              </DescriptionContainer>
+            </ItemContaier>
+          </>
+        ))}
+    </DescriptionContainer>
+  </ItemContaier>
+);
 
 export default RealeasedBundledItem;

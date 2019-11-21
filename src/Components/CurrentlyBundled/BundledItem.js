@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Button, InputNumber } from 'antd';
 
@@ -51,7 +51,7 @@ const Description = styled.div`
   font-size: 14px;
 `;
 
-const BundledItem = ({ item, handleMultipleItems, onClick }) => {
+const BundledItem = ({ item, updateQuantity, onClick }) => {
   return (
     <ItemContaier>
       <TitleContainer>
@@ -69,7 +69,7 @@ const BundledItem = ({ item, handleMultipleItems, onClick }) => {
             min={1}
             max={100}
             defaultValue={1}
-            onChange={value => handleMultipleItems(item.price * value)}
+            onChange={value => updateQuantity(item.code, value)}
           />
         )}
         {item.children &&
@@ -91,7 +91,7 @@ const BundledItem = ({ item, handleMultipleItems, onClick }) => {
                       min={1}
                       max={100}
                       defaultValue={1}
-                      onChange={value => handleMultipleItems(children.price * value)}
+                      onChange={value => updateQuantity(children.code, value)}
                     />
                   )}
                 </DescriptionContainer>

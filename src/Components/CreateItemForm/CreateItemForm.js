@@ -61,13 +61,14 @@ class CreateItemForm extends Component {
       parent: null,
       type: 'Single',
       children: [],
+      quantity: 1,
       errors: { code: false, description: false, price: false },
     };
   }
 
   render() {
     const { fields, createItem, items } = this.props;
-    const { type, errors, code, description, price, parent } = this.state;
+    const { type, errors, code, description, price } = this.state;
 
     const handleChangeValidate = (fieldName, value) => {
       if (fieldName === 'code') {
