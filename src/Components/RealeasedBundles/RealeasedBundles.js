@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import RealeasedBundledItem from '../RealeasedBundledItem';
+import React from "react";
+import styled from "styled-components";
+import RealeasedBundledItem from "../RealeasedBundledItem";
 
 const Container = styled.div`
   width: 100%;
@@ -25,21 +25,26 @@ const SeparatorLine = styled.hr`
   width: 100%;
 `;
 
-const RealeasedBundles = ({ realeasedBundles, deleteRealeasedBundled }) => (
-  <Container>
-    {Object.keys(realeasedBundles).map((item, i) => (
-      <>
-        <SectionTitle>{item.name}</SectionTitle>
-        <RealeasedBundledItem
-          item={realeasedBundles[item]}
-          onClick={() => deleteRealeasedBundled(item)}
-          buttonType="danger"
-          buttonText="delete"
-        />
-        {realeasedBundles[i + 1] && <SeparatorLine />}
-      </>
-    ))}
-  </Container>
-);
+const RealeasedBundles = ({ realeasedBundles, deleteRealeasedBundled }) => {
+  console.log("realeasedBundles", realeasedBundles);
+  return (
+    <Container>
+      {Object.keys(realeasedBundles).map((item, i) => {
+        return (
+          <>
+            <SectionTitle>{item}</SectionTitle>
+            <RealeasedBundledItem
+              item={realeasedBundles[item]}
+              onClick={() => deleteRealeasedBundled(item)}
+              buttonType="danger"
+              buttonText="delete"
+            />
+            {realeasedBundles[i + 1] && <SeparatorLine />}
+          </>
+        );
+      })}
+    </Container>
+  );
+};
 
 export default RealeasedBundles;

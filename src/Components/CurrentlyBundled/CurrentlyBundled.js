@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { Button, Input } from 'antd';
-import BundledItem from './BundledItemContainer';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { Button, Input } from "antd";
+import BundledItem from "./BundledItemContainer";
 
 const Container = styled.div`
   width: 40%;
@@ -36,32 +36,38 @@ const SubmitButton = styled(Button)`
 const CurrentlyBundled = ({
   listOfCurrentlyBundledItems,
   deleteCurrentlyBundledItem,
-  createRealeasedBundled,
+  createRealeasedBundled
 }) => {
   const [totalPrice, setTotalPrice] = useState(0);
-  const [bundleName, setBundleName] = useState('');
+  const [bundleName, setBundleName] = useState("");
+
+  console.log(
+    "listOfCurrentlyBundledItemslistOfCurrentlyBundledItems",
+    listOfCurrentlyBundledItems
+  );
 
   const handleMultipleItems = value => {
     setTotalPrice(totalPrice + value);
   };
 
-  const getPrice = listOfItems => {
+  const getPrice = () => {
     const subItems = [];
-    const items = Object.keys(listOfItems).map(key => {
-      if (listOfItems[key].children) {
-        Object.keys(listOfItems[key].children).map(item => {
-          const children = [listOfItems[key].children[item]];
+    const items = Object.keys(listOfCurrentlyBundledItems).map(key => {
+      if (listOfCurrentlyBundledItems[key].children) {
+        Object.keys(listOfCurrentlyBundledItems[key].children).map(item => {
+          const children = [listOfCurrentlyBundledItems[key].children[item]];
           Array.prototype.push.apply(subItems, children);
         });
       }
-      return listOfItems[key];
+      return listOfCurrentlyBundledItems[key];
     });
     Array.prototype.push.apply(items, subItems);
-    const total = items.reduce((acc, item) => acc + parseInt(item.price * item.quantity, 10), 0);
-    setTotalPrice(total);
+    const total = items.reduce(
+      (acc, item) => acc + parseInt(item.price * item.quantity, 10),
+      0
+    );
+    return total;
   };
-
-  useEffect(() => getPrice(listOfCurrentlyBundledItems));
 
   return (
     <Container>
@@ -76,16 +82,18 @@ const CurrentlyBundled = ({
           />
         ))}
       </ItemsContainer>
-      <Price> ${totalPrice}</Price>
+      <Price>${getPrice()}</Price>
       <Input
         value={bundleName}
-        style={{ width: '70%', margin: '10px 10px' }}
+        style={{ width: "70%", margin: "10px 10px" }}
         placeholder="Bundle Name"
         onChange={e => setBundleName(e.target.value)}
       />
       <SubmitButton
         type="primary"
-        onClick={() => createRealeasedBundled(bundleName, listOfCurrentlyBundledItems)}
+        onClick={() =>
+          createRealeasedBundled(bundleName, listOfCurrentlyBundledItems)
+        }
       >
         Accept Bundle
       </SubmitButton>

@@ -1,15 +1,15 @@
-import { createReducer, createActions } from 'reduxsauce';
+import { createReducer, createActions } from "reduxsauce";
 
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  createItem: ['newItem'],
-  deleteItem: ['item'],
-  createCurrentlyBundledItem: ['itemBundled'],
-  deleteCurrentlyBundledItem: ['itemBundled'],
-  createRealeasedBundled: ['bundleName', 'realeasedBundled'],
-  deleteRealeasedBundled: ['realeasedBundled'],
-  updateQuantity: ['fatherCode', 'code', 'quantity'],
+  createItem: ["newItem"],
+  deleteItem: ["item"],
+  createCurrentlyBundledItem: ["itemBundled"],
+  deleteCurrentlyBundledItem: ["itemBundled"],
+  createRealeasedBundled: ["bundleName", "realeasedBundled"],
+  deleteRealeasedBundled: ["realeasedBundled"],
+  updateQuantity: ["fatherCode", "code", "quantity"]
 });
 
 export const AuthTypes = Types;
@@ -20,44 +20,44 @@ export default Creators;
 export const INITIAL_STATE = {
   fields: [
     {
-      label: 'Code:',
-      type: 'text',
-      name: 'code',
+      label: "Code:",
+      type: "text",
+      name: "code",
       isRequired: true,
-      errorMessage: 'Should be less then 14 characters without blackspaces',
+      errorMessage: "Should be less then 14 characters without blackspaces"
     },
     {
-      label: 'Description:',
-      type: 'text',
-      name: 'description',
+      label: "Description:",
+      type: "text",
+      name: "description",
       isRequired: true,
-      errorMessage: 'This field is required',
+      errorMessage: "This field is required"
     },
     {
-      label: 'Price:',
-      type: 'numeric',
-      name: 'price',
+      label: "Price:",
+      type: "numeric",
+      name: "price",
       isMoney: true,
       isRequired: true,
-      errorMessage: 'Price must be more than 0',
+      errorMessage: "Price must be more than 0"
     },
     {
-      label: 'Type:',
-      type: 'radio',
-      name: 'type',
+      label: "Type:",
+      type: "radio",
+      name: "type",
       isRequired: false,
-      values: ['Single', 'Multiple'],
+      values: ["Single", "Multiple"]
     },
     {
-      label: 'Parent:',
-      type: 'select',
-      name: 'parent',
-      isRequired: false,
-    },
+      label: "Parent:",
+      type: "select",
+      name: "parent",
+      isRequired: false
+    }
   ],
   items: [],
   currentlyBlunded: [],
-  realeasedBundles: [],
+  realeasedBundles: []
 };
 
 /* ------------- Reducers ------------- */
@@ -68,22 +68,22 @@ const createItem = (state, { newItem }) => {
 
     papa.children = {
       ...papa.children,
-      [newItem.code]: newItem,
+      [newItem.code]: newItem
     };
     return {
       ...state,
       items: {
         ...state.items,
-        [newItem.parent]: papa,
-      },
+        [newItem.parent]: papa
+      }
     };
   }
   return {
     ...state,
     items: {
       ...state.items,
-      [newItem.code]: newItem,
-    },
+      [newItem.code]: newItem
+    }
   };
 };
 
@@ -92,62 +92,73 @@ const deleteItem = (state, { item }) => {
   return {
     ...state,
     items: {
-      ...state.items,
-    },
+      ...state.items
+    }
   };
 };
 
 const createCurrentlyBundledItem = (state, { itemBundled }) => {
-  console.log('itemBundled', itemBundled);
+  console.log("itemBundled", itemBundled);
   delete state.items[itemBundled.code];
 
   return {
     ...state,
     items: {
-      ...state.items,
+      ...state.items
     },
     currentlyBlunded: {
       ...state.currentlyBlunded,
-      [itemBundled.code]: itemBundled,
-    },
+      [itemBundled.code]: itemBundled
+    }
   };
 };
 
 const deleteCurrentlyBundledItem = (state, { itemBundled }) => {
   delete state.currentlyBlunded[itemBundled.code];
-  console.log('itemBundled', itemBundled);
+  console.log("itemBundled", itemBundled);
   return {
     ...state,
     currentlyBlunded: {
-      ...state.currentlyBlunded,
+      ...state.currentlyBlunded
     },
     items: {
       ...state.items,
-      [itemBundled.code]: itemBundled,
-    },
+      [itemBundled.code]: {
+        ...itemBundled,
+        quantity: 1
+      }
+    }
   };
 };
 
 const createRealeasedBundled = (state, { bundleName, realeasedBundled }) => {
   delete state.currentlyBlunded[realeasedBundled.code];
 
+  let bundle;
+  Object.keys(realeasedBundled).map(key => {
+    bundle = realeasedBundled[key];
+  });
+
   return {
     ...state,
     currentlyBlunded: {
-      ...state.itemBundled,
+      ...state.itemBundled
     },
-    realeasedBundles: realeasedBundled,
+    realeasedBundles: {
+      ...state.realeasedBundles,
+      [bundleName]: bundle
+    }
   };
 };
 
 const deleteRealeasedBundled = (state, { realeasedBundled }) => {
   delete state.realeasedBundles[realeasedBundled];
-  console.log('delete', realeasedBundled);
+  console.log("delete", realeasedBundled);
   return {
     ...state,
     realeasedBundles: {
-      ...state.realeasedBundles,
-    },
+      ...state.realeasedBundles
+    }
   };
 };
 
@@ -163,11 +174,11 @@ const updateQuantity = (state, { fatherCode, code, quantity }) => {
             ...state.currentlyBlunded[fatherCode].children,
             [code]: {
               ...state.currentlyBlunded[fatherCode].children[code],
-              quantity,
-            },
-          },
-        },
-      },
+              quantity
+            }
+          }
+        }
+      }
     };
   }
   return {
@@ -176,9 +187,9 @@ const updateQuantity = (state, { fatherCode, code, quantity }) => {
       ...state.currentlyBlunded,
       [code]: {
         ...state.currentlyBlunded[code],
-        quantity,
-      },
-    },
+        quantity
+      }
+    }
   };
 };
 
@@ -191,21 +202,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.DELETE_CURRENTLY_BUNDLED_ITEM]: deleteCurrentlyBundledItem,
   [Types.CREATE_REALEASED_BUNDLED]: createRealeasedBundled,
   [Types.DELETE_REALEASED_BUNDLED]: deleteRealeasedBundled,
-  [Types.UPDATE_QUANTITY]: updateQuantity,
+  [Types.UPDATE_QUANTITY]: updateQuantity
 });
-
-// const items = Object.keys(listOfItems).map(key => listOfItems[key]);
-// console.log('items', items);
-// const total = items.reduce((acc, item) => acc + parseInt(item.price * item.quantity, 10), 0);
-// setTotalPrice(total);
-
-// const subItems = [];
-// const items = Object.keys(listOfItems).map(key => {
-//   if (listOfItems[key].children.length > 0) {
-//     Array.prototype.push.apply(subItems, listOfItems[key].children);
-//   }
-//   return listOfItems[key];
-// });
-// Array.prototype.push.apply(items, subItems);
-// const total = items.reduce((acc, item) => acc + parseInt(item.price, 10), 0);
-// setTotalPrice(total);
