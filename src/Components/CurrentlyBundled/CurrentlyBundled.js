@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Button } from 'antd';
+import { Button, Input } from 'antd';
 import BundledItem from './BundledItemContainer';
 
 const Container = styled.div`
@@ -30,7 +30,7 @@ const Price = styled.p`
 
 const SubmitButton = styled(Button)`
   align-self: flex-start;
-  margin: 0 10px;
+  margin: 20px 10px;
 `;
 
 const CurrentlyBundled = ({
@@ -39,6 +39,7 @@ const CurrentlyBundled = ({
   createRealeasedBundled,
 }) => {
   const [totalPrice, setTotalPrice] = useState(0);
+  const [bundleName, setBundleName] = useState('');
 
   const handleMultipleItems = value => {
     setTotalPrice(totalPrice + value);
@@ -76,9 +77,15 @@ const CurrentlyBundled = ({
         ))}
       </ItemsContainer>
       <Price> ${totalPrice}</Price>
+      <Input
+        value={bundleName}
+        style={{ width: '70%', margin: '10px 10px' }}
+        placeholder="Bundle Name"
+        onChange={e => setBundleName(e.target.value)}
+      />
       <SubmitButton
         type="primary"
-        onClick={() => createRealeasedBundled(listOfCurrentlyBundledItems)}
+        onClick={() => createRealeasedBundled(bundleName, listOfCurrentlyBundledItems)}
       >
         Accept Bundle
       </SubmitButton>

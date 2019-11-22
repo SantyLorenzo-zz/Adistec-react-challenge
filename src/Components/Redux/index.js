@@ -7,7 +7,7 @@ const { Types, Creators } = createActions({
   deleteItem: ['item'],
   createCurrentlyBundledItem: ['itemBundled'],
   deleteCurrentlyBundledItem: ['itemBundled'],
-  createRealeasedBundled: ['realeasedBundled'],
+  createRealeasedBundled: ['bundleName', 'realeasedBundled'],
   deleteRealeasedBundled: ['realeasedBundled'],
   updateQuantity: ['fatherCode', 'code', 'quantity'],
 });
@@ -128,7 +128,7 @@ const deleteCurrentlyBundledItem = (state, { itemBundled }) => {
   };
 };
 
-const createRealeasedBundled = (state, { realeasedBundled }) => {
+const createRealeasedBundled = (state, { bundleName, realeasedBundled }) => {
   delete state.currentlyBlunded[realeasedBundled.code];
 
   return {
