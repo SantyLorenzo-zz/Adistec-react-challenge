@@ -45,25 +45,22 @@ const CurrentlyBundled = ({
   };
 
   const getPrice = listOfItems => {
-    // const items = Object.keys(listOfItems).map(key => listOfItems[key]);
-    // console.log('items', items);
-    // const total = items.reduce((acc, item) => acc + parseInt(item.price * item.quantity, 10), 0);
-    // setTotalPrice(total);
     const subItems = [];
     const items = Object.keys(listOfItems).map(key => {
-      if (listOfItems[key].children.length > 0) {
-        Array.prototype.push.apply(subItems, listOfItems[key].children);
+      if (listOfItems[key].children) {
+        Object.keys(listOfItems[key].children).map(item => {
+          const children = [listOfItems[key].children[item]];
+          Array.prototype.push.apply(subItems, children);
+        });
       }
       return listOfItems[key];
     });
     Array.prototype.push.apply(items, subItems);
-    const total = items.reduce((acc, item) => acc + parseInt(item.price, 10), 0);
+    const total = items.reduce((acc, item) => acc + parseInt(item.price * item.quantity, 10), 0);
     setTotalPrice(total);
   };
 
-  useEffect(() => {
-    getPrice(listOfCurrentlyBundledItems);
-  });
+  useEffect(() => getPrice(listOfCurrentlyBundledItems));
 
   return (
     <Container>

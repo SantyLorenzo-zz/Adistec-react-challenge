@@ -69,35 +69,38 @@ const BundledItem = ({ item, updateQuantity, onClick }) => {
             min={1}
             max={100}
             defaultValue={1}
-            onChange={value => updateQuantity(item.code, value)}
+            onChange={value => updateQuantity(null, item.code, value)}
           />
         )}
         {item.children &&
-          item.children.map((children, e) => (
-            <>
-              <SubItems>Sub-items</SubItems>
-              <ItemContaier>
-                <ChildrenTitleContainer>
-                  <Title>
-                    CODE{item.code}-{children.code}
-                  </Title>
-                </ChildrenTitleContainer>
-                <DescriptionContainer>
-                  <Description>{children.description}</Description>
-                  <Description>${children.price}</Description>
-                  <Description>{children.type}</Description>
-                  {children.type === 'Multiple' && (
-                    <InputNumber
-                      min={1}
-                      max={100}
-                      defaultValue={1}
-                      onChange={value => updateQuantity(children.code, value)}
-                    />
-                  )}
-                </DescriptionContainer>
-              </ItemContaier>
-            </>
-          ))}
+          Object.keys(item.children).map(key => {
+            const subItem = item.children[key];
+            return (
+              <>
+                <SubItems>Sub-items</SubItems>
+                <ItemContaier>
+                  <ChildrenTitleContainer>
+                    <Title>
+                      CODE{item.code}-{subItem.code}
+                    </Title>
+                  </ChildrenTitleContainer>
+                  <DescriptionContainer>
+                    <Description>{subItem.description}</Description>
+                    <Description>${subItem.price}</Description>
+                    <Description>{subItem.type}</Description>
+                    {subItem.type === 'Multiple' && (
+                      <InputNumber
+                        min={1}
+                        max={100}
+                        defaultValue={1}
+                        onChange={value => updateQuantity(item.code, subItem.code, value)}
+                      />
+                    )}
+                  </DescriptionContainer>
+                </ItemContaier>
+              </>
+            );
+          })}
       </DescriptionContainer>
     </ItemContaier>
   );

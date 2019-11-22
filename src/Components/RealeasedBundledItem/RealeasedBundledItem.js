@@ -56,7 +56,9 @@ const RealeasedBundledItem = ({ item, onClick }) => (
     <TitleContainer>
       <Title>CODE{item.code}</Title>
       <div>
-        <Button type="link">Print</Button>
+        <Button onClick={() => window.print()} type="link">
+          Print
+        </Button>
         <Button onClick={() => onClick(item)} type="danger">
           Delete
         </Button>
@@ -67,23 +69,26 @@ const RealeasedBundledItem = ({ item, onClick }) => (
       <Description>${item.price}</Description>
       <Description>{item.type}</Description>
       {item.children &&
-        item.children.map((children, e) => (
-          <>
-            <SubItems>Sub-items</SubItems>
-            <ItemContaier>
-              <ChildrenTitleContainer>
-                <Title>
-                  CODE{item.code}-{children.code}
-                </Title>
-              </ChildrenTitleContainer>
-              <DescriptionContainer>
-                <Description>{children.description}</Description>
-                <Description>${children.price}</Description>
-                <Description>{children.type}</Description>
-              </DescriptionContainer>
-            </ItemContaier>
-          </>
-        ))}
+        Object.keys(item.children).map(key => {
+          const subItem = item.children[key];
+          return (
+            <>
+              <SubItems>Sub-items</SubItems>
+              <ItemContaier>
+                <ChildrenTitleContainer>
+                  <Title>
+                    CODE{item.code}-{subItem.code}
+                  </Title>
+                </ChildrenTitleContainer>
+                <DescriptionContainer>
+                  <Description>{subItem.description}</Description>
+                  <Description>${subItem.price}</Description>
+                  <Description>{subItem.type}</Description>
+                </DescriptionContainer>
+              </ItemContaier>
+            </>
+          );
+        })}
     </DescriptionContainer>
   </ItemContaier>
 );

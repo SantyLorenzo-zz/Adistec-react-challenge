@@ -54,6 +54,8 @@ const Description = styled.div`
 `;
 
 const Item = ({ item, onClick, buttonType, buttonText }) => {
+  const isEmpty = obj => Object.entries(obj).length === 0;
+
   return (
     <ItemContaier>
       <TitleContainer>
@@ -66,23 +68,25 @@ const Item = ({ item, onClick, buttonType, buttonText }) => {
         <Description>{item.description}</Description>
         <Description>${item.price}</Description>
         <Description>{item.type}</Description>
+        {!isEmpty(item.children) && <SubItems>Sub-items</SubItems>}
+        {console.log('pepe', isEmpty(item.children))}
+
         {item.children &&
-          item.children.map((children, e) => (
+          Object.keys(item.children).map((key, e) => (
             <>
-              <SubItems>Sub-items</SubItems>
               <ItemContaier>
                 <ChildrenTitleContainer>
                   <Title>
-                    CODE{item.code}-{children.code}
+                    CODE{item.code}-{item.children[key].code}
                   </Title>
                   <Button onClick={() => onClick(item)} type={buttonType}>
                     {buttonText}
                   </Button>
                 </ChildrenTitleContainer>
                 <DescriptionContainer>
-                  <Description>{children.description}</Description>
-                  <Description>${children.price}</Description>
-                  <Description>{children.type}</Description>
+                  <Description>{item.children[key].description}</Description>
+                  <Description>${item.children[key].price}</Description>
+                  <Description>{item.children[key].type}</Description>
                 </DescriptionContainer>
               </ItemContaier>
             </>

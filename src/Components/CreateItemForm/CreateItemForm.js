@@ -114,12 +114,12 @@ class CreateItemForm extends Component {
         this.setState({ errors: { ...errors, price: true } });
         return;
       }
-      createItem(this.state);
+      const { errors, ...item } = this.state;
+      createItem(item);
       this.setState({
         code: '',
         description: '',
         price: '',
-        parent: null,
         type: 'Single',
       });
     };

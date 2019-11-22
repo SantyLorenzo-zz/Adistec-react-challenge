@@ -9,7 +9,7 @@ const { Types, Creators } = createActions({
   deleteCurrentlyBundledItem: ['itemBundled'],
   createRealeasedBundled: ['realeasedBundled'],
   deleteRealeasedBundled: ['realeasedBundled'],
-  updateQuantity: ['code', 'quantity'],
+  updateQuantity: ['fatherCode', 'code', 'quantity'],
 });
 
 export const AuthTypes = Types;
@@ -63,10 +63,13 @@ export const INITIAL_STATE = {
 /* ------------- Reducers ------------- */
 
 const createItem = (state, { newItem }) => {
-  console.log('newItem', newItem);
   if (newItem.parent) {
     const papa = state.items[newItem.parent];
-    papa.children.push(newItem);
+
+    papa.children = {
+      ...papa.children,
+      [newItem.code]: newItem,
+    };
     return {
       ...state,
       items: {
@@ -95,6 +98,7 @@ const deleteItem = (state, { item }) => {
 };
 
 const createCurrentlyBundledItem = (state, { itemBundled }) => {
+  console.log('itemBundled', itemBundled);
   delete state.items[itemBundled.code];
 
   return {
@@ -127,7 +131,6 @@ const deleteCurrentlyBundledItem = (state, { itemBundled }) => {
 const createRealeasedBundled = (state, { realeasedBundled }) => {
   delete state.currentlyBlunded[realeasedBundled.code];
 
-  console.log('realeasedBundled', realeasedBundled);
   return {
     ...state,
     currentlyBlunded: {
@@ -148,7 +151,25 @@ const deleteRealeasedBundled = (state, { realeasedBundled }) => {
   };
 };
 
-const updateQuantity = (state, { code, quantity }) => {
+const updateQuantity = (state, { fatherCode, code, quantity }) => {
+  if (fatherCode) {
+    return {
+      ...state,
+      currentlyBlunded: {
+        ...state.currentlyBlunded,
+        [fatherCode]: {
+          ...state.currentlyBlunded[fatherCode],
+          children: {
+            ...state.currentlyBlunded[fatherCode].children,
+            [code]: {
+              ...state.currentlyBlunded[fatherCode].children[code],
+              quantity,
+            },
+          },
+        },
+      },
+    };
+  }
   return {
     ...state,
     currentlyBlunded: {
@@ -172,6 +193,11 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.DELETE_REALEASED_BUNDLED]: deleteRealeasedBundled,
   [Types.UPDATE_QUANTITY]: updateQuantity,
 });
+
+// const items = Object.keys(listOfItems).map(key => listOfItems[key]);
+// console.log('items', items);
+// const total = items.reduce((acc, item) => acc + parseInt(item.price * item.quantity, 10), 0);
+// setTotalPrice(total);
 
 // const subItems = [];
 // const items = Object.keys(listOfItems).map(key => {
