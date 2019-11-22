@@ -1,6 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Button } from 'antd';
+import React from "react";
+import styled from "styled-components";
+import { Button } from "antd";
+import numeral from "numeral";
 
 const ItemContaier = styled.div`
   width: 100%;
@@ -66,11 +67,9 @@ const Item = ({ item, onClick, buttonType, buttonText }) => {
       </TitleContainer>
       <DescriptionContainer>
         <Description>{item.description}</Description>
-        <Description>${item.price}</Description>
+        <Description>{numeral(item.price).format("$0,0")}</Description>
         <Description>{item.type}</Description>
         {!isEmpty(item.children) && <SubItems>Sub-items</SubItems>}
-        {console.log('pepe', isEmpty(item.children))}
-
         {item.children &&
           Object.keys(item.children).map((key, e) => (
             <>
@@ -79,13 +78,12 @@ const Item = ({ item, onClick, buttonType, buttonText }) => {
                   <Title>
                     CODE{item.code}-{item.children[key].code}
                   </Title>
-                  <Button onClick={() => onClick(item)} type={buttonType}>
-                    {buttonText}
-                  </Button>
                 </ChildrenTitleContainer>
                 <DescriptionContainer>
                   <Description>{item.children[key].description}</Description>
-                  <Description>${item.children[key].price}</Description>
+                  <Description>
+                    {numeral(item.children[key].price).format("$0,0.00")}
+                  </Description>
                   <Description>{item.children[key].type}</Description>
                 </DescriptionContainer>
               </ItemContaier>

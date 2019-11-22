@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import Item from '../CreateItem/Item';
+import React from "react";
+import styled from "styled-components";
+import Item from "../CreateItem/Item";
 
 const Container = styled.div`
   width: 60%;
@@ -21,7 +21,10 @@ const SectionTitle = styled.p`
   margin: 20px 0 0 30px;
 `;
 
-const AvailableItems = ({ listOfAvailableItems, createCurrentlyBundledItem }) => (
+const AvailableItems = ({
+  listOfAvailableItems,
+  createCurrentlyBundledItem
+}) => (
   <Container>
     <SectionTitle>Available Items</SectionTitle>
     <ItemsContainer>

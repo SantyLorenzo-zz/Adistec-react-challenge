@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Button, Input } from "antd";
+import numeral from "numeral";
 import BundledItem from "./BundledItemContainer";
 
 const Container = styled.div`
@@ -19,7 +20,7 @@ const SectionTitle = styled.p`
   font-size: 30px;
   font-weight: 600;
   margin-bottom: 0;
-  margin: 20px 0 0 30px;
+  margin-top: 20px;
 `;
 
 const Price = styled.p`
@@ -40,11 +41,6 @@ const CurrentlyBundled = ({
 }) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [bundleName, setBundleName] = useState("");
-
-  console.log(
-    "listOfCurrentlyBundledItemslistOfCurrentlyBundledItems",
-    listOfCurrentlyBundledItems
-  );
 
   const handleMultipleItems = value => {
     setTotalPrice(totalPrice + value);
@@ -82,21 +78,30 @@ const CurrentlyBundled = ({
           />
         ))}
       </ItemsContainer>
-      <Price>${getPrice()}</Price>
-      <Input
-        value={bundleName}
-        style={{ width: "70%", margin: "10px 10px" }}
-        placeholder="Bundle Name"
-        onChange={e => setBundleName(e.target.value)}
-      />
-      <SubmitButton
-        type="primary"
-        onClick={() =>
-          createRealeasedBundled(bundleName, listOfCurrentlyBundledItems)
-        }
-      >
-        Accept Bundle
-      </SubmitButton>
+      {listOfCurrentlyBundledItems.length > 0 ||
+        (Object.entries(listOfCurrentlyBundledItems).length !== 0 && (
+          <>
+            <Price>{numeral(getPrice()).format("$0,0.00")}</Price>
+            <Input
+              value={bundleName}
+              style={{ width: "70%", margin: "10px 10px" }}
+              placeholder="Bundle Name"
+              onChange={e => setBundleName(e.target.value)}
+            />
+            <SubmitButton
+              type="primary"
+              onClick={() =>
+                createRealeasedBundled(
+                  bundleName,
+                  listOfCurrentlyBundledItems,
+                  getPrice()
+                )
+              }
+            >
+              Accept Bundle
+            </SubmitButton>
+          </>
+        ))}
     </Container>
   );
 };

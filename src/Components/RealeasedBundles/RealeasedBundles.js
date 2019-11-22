@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Button } from "antd";
 import RealeasedBundledItem from "../RealeasedBundledItem";
 
 const Container = styled.div`
@@ -25,26 +26,39 @@ const SeparatorLine = styled.hr`
   width: 100%;
 `;
 
-const RealeasedBundles = ({ realeasedBundles, deleteRealeasedBundled }) => {
-  console.log("realeasedBundles", realeasedBundles);
-  return (
-    <Container>
-      {Object.keys(realeasedBundles).map((item, i) => {
-        return (
-          <>
+const HeaderItem = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const RealeasedBundles = ({ realeasedBundles, deleteRealeasedBundled }) => (
+  <Container>
+    {Object.keys(realeasedBundles).map((item, i) => {
+      return (
+        <>
+          <HeaderItem>
             <SectionTitle>{item}</SectionTitle>
-            <RealeasedBundledItem
-              item={realeasedBundles[item]}
-              onClick={() => deleteRealeasedBundled(item)}
-              buttonType="danger"
-              buttonText="delete"
-            />
-            {realeasedBundles[i + 1] && <SeparatorLine />}
-          </>
-        );
-      })}
-    </Container>
-  );
-};
+            <div>
+              <Button type="link">Print</Button>
+              <Button
+                onClick={() => deleteRealeasedBundled(item)}
+                type="danger"
+              >
+                Delete
+              </Button>
+            </div>
+          </HeaderItem>
+          <RealeasedBundledItem
+            item={realeasedBundles[item]}
+            buttonType="danger"
+            buttonText="delete"
+          />
+          {realeasedBundles[i + 1] && <SeparatorLine />}
+        </>
+      );
+    })}
+  </Container>
+);
 
 export default RealeasedBundles;

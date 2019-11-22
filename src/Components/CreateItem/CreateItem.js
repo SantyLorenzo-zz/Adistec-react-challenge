@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import CreateItemForm from '../CreateItemForm';
-import Item from './Item';
+import React from "react";
+import styled from "styled-components";
+import CreateItemForm from "../CreateItemForm";
+import Item from "./Item";
 
 const Container = styled.div`
   width: 100%;
@@ -22,7 +22,12 @@ const CreateItem = ({ items, fields, createItem, deleteItem }) => (
     <CreateItemForm fields={fields} items={items} createItem={createItem} />
     <ItemsContainer>
       {Object.keys(items).map((key, i) => (
-        <Item item={items[key]} buttonType="danger" buttonText="delete" onClick={deleteItem} />
+        <Item
+          item={items[key]}
+          buttonType="danger"
+          buttonText="delete"
+          onClick={deleteItem}
+        />
       ))}
     </ItemsContainer>
   </Container>

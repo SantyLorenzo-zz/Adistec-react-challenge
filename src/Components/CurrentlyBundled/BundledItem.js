@@ -1,6 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Button, InputNumber } from 'antd';
+import React from "react";
+import styled from "styled-components";
+import { Button, InputNumber } from "antd";
+import numeral from "numeral";
 
 const ItemContaier = styled.div`
   width: 100%;
@@ -51,7 +52,22 @@ const Description = styled.div`
   font-size: 14px;
 `;
 
+const MultipleInput = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const ItemTotal = styled.p`
+  margin: 5px 0;
+  color: #7c7c7c;
+  font-size: 14px;
+  margin-left: 10px;
+`;
+
 const BundledItem = ({ item, updateQuantity, onClick }) => {
+  const itemPrice = parseInt(item.price * item.quantity, 10);
+
   return (
     <ItemContaier>
       <TitleContainer>
@@ -62,19 +78,23 @@ const BundledItem = ({ item, updateQuantity, onClick }) => {
       </TitleContainer>
       <DescriptionContainer>
         <Description>{item.description}</Description>
-        <Description>${item.price}</Description>
+        <Description>{numeral(item.price).format("$0,0.00")}</Description>
         <Description>{item.type}</Description>
-        {item.type === 'Multiple' && (
-          <InputNumber
-            min={1}
-            max={100}
-            defaultValue={1}
-            onChange={value => updateQuantity(null, item.code, value)}
-          />
+        {item.type === "Multiple" && (
+          <MultipleInput>
+            <InputNumber
+              min={1}
+              max={100}
+              defaultValue={1}
+              onChange={value => updateQuantity(null, item.code, value)}
+            />
+            <ItemTotal>{numeral(itemPrice).format("$0,0.00")}</ItemTotal>
+          </MultipleInput>
         )}
         {item.children &&
           Object.keys(item.children).map(key => {
             const subItem = item.children[key];
+            const subItemPrice = parseInt(subItem.price * subItem.quantity, 10);
             return (
               <>
                 <SubItems>Sub-items</SubItems>
@@ -86,15 +106,25 @@ const BundledItem = ({ item, updateQuantity, onClick }) => {
                   </ChildrenTitleContainer>
                   <DescriptionContainer>
                     <Description>{subItem.description}</Description>
-                    <Description>${subItem.price}</Description>
+                    <Description>
+                      {numeral(subItem.price).format("$0,0.00")}
+                    </Description>
+
                     <Description>{subItem.type}</Description>
-                    {subItem.type === 'Multiple' && (
-                      <InputNumber
-                        min={1}
-                        max={100}
-                        defaultValue={1}
-                        onChange={value => updateQuantity(item.code, subItem.code, value)}
-                      />
+                    {subItem.type === "Multiple" && (
+                      <MultipleInput>
+                        <InputNumber
+                          min={1}
+                          max={100}
+                          defaultValue={1}
+                          onChange={value =>
+                            updateQuantity(item.code, subItem.code, value)
+                          }
+                        />
+                        <ItemTotal>
+                          {numeral(subItemPrice).format("$0,0.00")}
+                        </ItemTotal>
+                      </MultipleInput>
                     )}
                   </DescriptionContainer>
                 </ItemContaier>

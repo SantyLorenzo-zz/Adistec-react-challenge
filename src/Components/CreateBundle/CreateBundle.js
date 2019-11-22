@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import AvailableItems from '../AvailableItems';
-import CurrentlyBundled from '../CurrentlyBundled';
+import React from "react";
+import styled from "styled-components";
+import AvailableItems from "../AvailableItems";
+import CurrentlyBundled from "../CurrentlyBundled";
 
 const Container = styled.div`
   width: 100%;
@@ -17,7 +17,7 @@ const CreateBundle = ({
   currentlyBlunded,
   createCurrentlyBundledItem,
   deleteCurrentlyBundledItem,
-  createRealeasedBundled,
+  createRealeasedBundled
 }) => (
   <Container>
     <AvailableItems

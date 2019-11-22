@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import { Button, Radio, Select, Input, Form } from 'antd';
-import numeral from 'numeral';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import styled from "styled-components";
+import { Button, Radio, Select, Input, Form } from "antd";
+import PropTypes from "prop-types";
 
 const Container = styled.div`
   width: 500px
@@ -55,14 +54,14 @@ class CreateItemForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      code: '',
-      description: '',
+      code: "",
+      description: "",
       price: 0,
       parent: null,
-      type: 'Single',
+      type: "Single",
       children: [],
       quantity: 1,
-      errors: { code: false, description: false, price: false },
+      errors: { code: false, description: false, price: false }
     };
   }
 
@@ -71,7 +70,7 @@ class CreateItemForm extends Component {
     const { type, errors, code, description, price } = this.state;
 
     const handleChangeValidate = (fieldName, value) => {
-      if (fieldName === 'code') {
+      if (fieldName === "code") {
         if (value.length === 0 || value.length > 14 || /\s/.test(value)) {
           this.setState({ errors: { ...errors, [fieldName]: true } });
         } else {
@@ -79,7 +78,7 @@ class CreateItemForm extends Component {
         }
         return;
       }
-      if (fieldName === 'description') {
+      if (fieldName === "description") {
         if (value.length === 0) {
           this.setState({ errors: { ...errors, [fieldName]: true } });
         } else {
@@ -87,7 +86,7 @@ class CreateItemForm extends Component {
         }
       }
 
-      if (fieldName === 'price') {
+      if (fieldName === "price") {
         if (!value || value === 0) {
           this.setState({ errors: { ...errors, [fieldName]: true } });
         } else {
@@ -102,11 +101,11 @@ class CreateItemForm extends Component {
     };
 
     const handleSubmit = () => {
-      if (code === '' || code.length > 14 || /\s/.test(code)) {
+      if (code === "" || code.length > 14 || /\s/.test(code)) {
         this.setState({ errors: { ...errors, code: true } });
         return;
       }
-      if (description === '') {
+      if (description === "") {
         this.setState({ errors: { ...errors, description: true } });
         return;
       }
@@ -117,10 +116,10 @@ class CreateItemForm extends Component {
       const { errors, ...item } = this.state;
       createItem(item);
       this.setState({
-        code: '',
-        description: '',
-        price: '',
-        type: 'Single',
+        code: "",
+        description: "",
+        price: "",
+        type: "Single"
       });
     };
 
@@ -128,7 +127,7 @@ class CreateItemForm extends Component {
       <Container>
         <Form layout="inline">
           {fields.map((field, key) => {
-            if (field.type === 'select' && items) {
+            if (field.type === "select" && items) {
               return (
                 <SelectContainer>
                   <Label>{field.label}</Label>
@@ -145,10 +144,10 @@ class CreateItemForm extends Component {
                 </SelectContainer>
               );
             }
-            if (field.type === 'radio') {
+            if (field.type === "radio") {
               return (
                 <Radio.Group
-                  style={{ margin: '17px 0', display: 'flex' }}
+                  style={{ margin: "17px 0", display: "flex" }}
                   onChange={e => this.setState({ type: e.target.value })}
                   value={type}
                 >
@@ -163,15 +162,15 @@ class CreateItemForm extends Component {
               <InputContainer>
                 <Form.Item
                   label={field.label}
-                  validateStatus={errors[field.name] && 'error'}
+                  validateStatus={errors[field.name] && "error"}
                   help={errors[field.name] && field.errorMessage}
                 >
                   <Input
-                    style={{ width: '340px' }}
+                    style={{ width: "340px" }}
                     onChange={e => handleChange(field.name, e.target.value)}
                     value={
                       field.isMoney
-                        ? numeral(this.state[field.name]).format('0,0.[00]')
+                        ? this.state[field.name]
                         : this.state[field.name]
                     }
                   />
@@ -196,9 +195,9 @@ CreateItemForm.propTypes = {
     type: PropTypes.string,
     name: PropTypes.string,
     isMoney: PropTypes.bool,
-    isRequired: PropTypes.bool,
+    isRequired: PropTypes.bool
   }).isRequired,
-  createItem: PropTypes.func.isRequired,
+  createItem: PropTypes.func.isRequired
 };
 
 export default CreateItemForm;

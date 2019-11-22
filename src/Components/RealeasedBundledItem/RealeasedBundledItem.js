@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Button } from 'antd';
+import React from "react";
+import styled from "styled-components";
+import numeral from "numeral";
 
 const ItemContaier = styled.div`
   width: 100%;
@@ -51,46 +51,55 @@ const Description = styled.div`
   font-size: 14px;
 `;
 
-const RealeasedBundledItem = ({ item, onClick }) => (
-  <ItemContaier>
-    <TitleContainer>
-      <Title>CODE{item.code}</Title>
-      <div>
-        <Button onClick={() => window.print()} type="link">
-          Print
-        </Button>
-        <Button onClick={() => onClick(item)} type="danger">
-          Delete
-        </Button>
-      </div>
-    </TitleContainer>
-    <DescriptionContainer>
-      <Description>{item.description}</Description>
-      <Description>${item.price}</Description>
-      <Description>{item.type}</Description>
-      {item.children &&
-        Object.keys(item.children).map(key => {
-          const subItem = item.children[key];
-          return (
-            <>
-              <SubItems>Sub-items</SubItems>
-              <ItemContaier>
-                <ChildrenTitleContainer>
-                  <Title>
-                    CODE{item.code}-{subItem.code}
-                  </Title>
-                </ChildrenTitleContainer>
-                <DescriptionContainer>
-                  <Description>{subItem.description}</Description>
-                  <Description>${subItem.price}</Description>
-                  <Description>{subItem.type}</Description>
-                </DescriptionContainer>
-              </ItemContaier>
-            </>
-          );
-        })}
-    </DescriptionContainer>
-  </ItemContaier>
-);
+const RealeasedBundledItem = ({ item }) => {
+  const itemPrice = parseInt(item.price * item.quantity, 10);
+  return (
+    <ItemContaier>
+      <TitleContainer>
+        <Title>CODE{item.code}</Title>
+        <Title>{numeral(item.totalPrice).format("$0,0.00")}</Title>
+      </TitleContainer>
+      <DescriptionContainer>
+        <Description>{item.description}</Description>
+        <Description>{numeral(item.price).format("$0,0.00")}</Description>
+        <Description>{item.type}</Description>
+        <Description>
+          {item.type === "Multiple" &&
+            `${numeral(itemPrice).format("$0,0.00")} (x${item.quantity})`}
+        </Description>
+        {item.children &&
+          Object.keys(item.children).map(key => {
+            const subItem = item.children[key];
+            const subItemPrice = parseInt(subItem.price * subItem.quantity, 10);
+            return (
+              <>
+                <SubItems>Sub-items</SubItems>
+                <ItemContaier>
+                  <ChildrenTitleContainer>
+                    <Title>
+                      CODE{item.code}-{subItem.code}
+                    </Title>
+                  </ChildrenTitleContainer>
+                  <DescriptionContainer>
+                    <Description>{subItem.description}</Description>
+                    <Description>
+                      {numeral(subItem.price).format("$0,0.00")}
+                    </Description>
+                    <Description>{subItem.type}</Description>
+                    <Description>
+                      {subItem.type === "Multiple" &&
+                        `${numeral(subItemPrice).format("$0,0.00")} (x${
+                          subItem.quantity
+                        })`}
+                    </Description>
+                  </DescriptionContainer>
+                </ItemContaier>
+              </>
+            );
+          })}
+      </DescriptionContainer>
+    </ItemContaier>
+  );
+};
 
 export default RealeasedBundledItem;

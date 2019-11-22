@@ -7,7 +7,7 @@ const { Types, Creators } = createActions({
   deleteItem: ["item"],
   createCurrentlyBundledItem: ["itemBundled"],
   deleteCurrentlyBundledItem: ["itemBundled"],
-  createRealeasedBundled: ["bundleName", "realeasedBundled"],
+  createRealeasedBundled: ["bundleName", "realeasedBundled", "totalPrice"],
   deleteRealeasedBundled: ["realeasedBundled"],
   updateQuantity: ["fatherCode", "code", "quantity"]
 });
@@ -98,7 +98,6 @@ const deleteItem = (state, { item }) => {
 };
 
 const createCurrentlyBundledItem = (state, { itemBundled }) => {
-  console.log("itemBundled", itemBundled);
   delete state.items[itemBundled.code];
 
   return {
@@ -115,7 +114,6 @@ const createCurrentlyBundledItem = (state, { itemBundled }) => {
 
 const deleteCurrentlyBundledItem = (state, { itemBundled }) => {
   delete state.currentlyBlunded[itemBundled.code];
-  console.log("itemBundled", itemBundled);
   return {
     ...state,
     currentlyBlunded: {
@@ -131,7 +129,10 @@ const deleteCurrentlyBundledItem = (state, { itemBundled }) => {
   };
 };
 
-const createRealeasedBundled = (state, { bundleName, realeasedBundled }) => {
+const createRealeasedBundled = (
+  state,
+  { bundleName, realeasedBundled, totalPrice }
+) => {
   delete state.currentlyBlunded[realeasedBundled.code];
 
   let bundle;
@@ -146,14 +147,16 @@ const createRealeasedBundled = (state, { bundleName, realeasedBundled }) => {
     },
     realeasedBundles: {
       ...state.realeasedBundles,
-      [bundleName]: bundle
+      [bundleName]: {
+        ...bundle,
+        totalPrice
+      }
     }
   };
 };
 
 const deleteRealeasedBundled = (state, { realeasedBundled }) => {
   delete state.realeasedBundles[realeasedBundled];
-  console.log("delete", realeasedBundled);
   return {
     ...state,
     realeasedBundles: {
